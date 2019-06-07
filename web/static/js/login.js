@@ -16,7 +16,7 @@ function getData(){
             success: function(response){
                 //alert(JSON.stringify(response));
                 $('#action').html(response['statusText']);
-            },
+            }.load(window.location.href = "/static/chat.html"),
             error: function(response){
                 //alert(JSON.stringify(response));
                 $('#action').html(response['statusText']);

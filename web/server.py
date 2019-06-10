@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('login.html')
+    return render_template('index.html')
 
 @app.route('/static/<content>')
 def static_content(content):

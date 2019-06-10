@@ -144,6 +144,22 @@ def create_test_messages():
     db_session.commit()
     return "Test message created!"
 
+@app.route('/sendMessage', methods = ['POST'])
+def send_message():
+    message = json.loads(request.data)
+    content = message['content']
+    user_from_id = message['user_from_id']
+    user_to_id = message['user_to_id']
+    session = db.getSession(engine)
+    add = entities.Message(
+    content=content,
+    user_from_id=user_from_id,
+    user_to_id=user_to_id,
+    )
+    session.add(add)
+    session.commit()
+    return 'Your message was sent'
+
 #-------------------AUTHENTICATE---------------------------------------------------------------------------------
 
 @app.route('/authenticate', methods = ['POST'])
@@ -162,27 +178,23 @@ def authenticate():
             ).filter(entities.User.username==username
             ).filter(entities.User.password==password
             ).one()
+        session['logged_user'] = user.id
         message = {'message':'Authorized'}
         return Response(message, status=200,mimetype='application/json')
     except Exception:
         message = {'message':'Unauthorized'}
         return Response(message, status=401,mimetype='application/json')
 
-@app.route('/sendMessage', methods = ['POST'])
-def send_message():
-    message = json.loads(request.data)
-    content = message['content']
-    user_from_id = message['user_from_id']
-    user_to_id = message['user_to_id']
-    session = db.getSession(engine)
-    add = entities.Message(
-        content=content,
-        user_from_id=user_from_id,
-        user_to_id=user_to_id,
-    )
-    session.add(add)
-    session.commit()
-    return 'Your message was sent'
+@app.route('/current', methods = ['GET'])
+def current_user():
+    db_session = db.getSession(engine)
+    user = db_session.query(entities.User).filter(entities.User.id == session['logged_user']).first()
+    return Response(json.dumps(user,cls=connector.AlchemyEncoder),mimetype='application/json')
+
+@app.route('/logout', methods = ['GET'])
+def logout():
+    session.clear()
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.secret_key = ".."

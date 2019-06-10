@@ -73,6 +73,14 @@ def delete_user():
     session.commit()
     return "Deleted User"
 
+@app.route('/create_test_users', methods = ['GET'])
+def create_test_users():
+    db_session = db.getSession(engine)
+    user = entities.User(name="David", fullname="Lazo", password="1234", username="qwerty")
+    db_session.add(user)
+    db_session.commit()
+    return "Test user created!"
+
 #-------------------MESSAGE---------------------------------------------------------------------------------
 
 @app.route('/messages', methods = ['POST'])
@@ -128,6 +136,16 @@ def delete_message():
     session.commit()
     return "Deleted Message"
 
+@app.route('/create_test_messages', methods = ['GET'])
+def create_test_messages():
+    db_session = db.getSession(engine)
+    message = entities.Message(content="Hi")
+    db_session.add(message)
+    db_session.commit()
+    return "Test message created!"
+
+#-------------------AUTHENTICATE---------------------------------------------------------------------------------
+
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
     #Get data form request
@@ -149,6 +167,22 @@ def authenticate():
     except Exception:
         message = {'message':'Unauthorized'}
         return Response(message, status=401,mimetype='application/json')
+
+@app.route('/sendMessage', methods = ['POST'])
+def send_message():
+    message = json.loads(request.data)
+    content = message['content']
+    user_from_id = message['user_from_id']
+    user_to_id = message['user_to_id']
+    session = db.getSession(engine)
+    add = entities.Message(
+        content=content,
+        user_from_id=user_from_id,
+        user_to_id=user_to_id,
+    )
+    session.add(add)
+    session.commit()
+    return 'Your message was sent'
 
 if __name__ == '__main__':
     app.secret_key = ".."

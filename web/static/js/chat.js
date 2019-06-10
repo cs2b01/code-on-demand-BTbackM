@@ -8,10 +8,10 @@ function sendMessage(){
                 "user_to_id": user_to_id
             });
        $.ajax({
-                 url:'/sendmessage',
+                 url:'/sendMessage',
                  type:'POST',
                  contentType: 'application/json',
                  data : message,
-                  dataType:'json'
+                 dataType:'json'
                });
     }

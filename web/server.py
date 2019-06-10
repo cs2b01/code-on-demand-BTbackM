@@ -149,7 +149,7 @@ def create_test_messages():
 @app.route('/authenticate', methods = ['POST'])
 def authenticate():
     #Get data form request
-    time.sleep(4)
+    time.sleep(3)
     message = json.loads(request.data)
     username = message['username']
     password = message['password']

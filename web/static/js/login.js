@@ -1,5 +1,5 @@
 function getData(){
-        $('#action').html("Authenticating...");
+        $('#loading').show();
         var username = $('#username').val();
         var password = $('#password').val();
         var message = JSON.stringify({
@@ -13,13 +13,15 @@ function getData(){
             contentType: 'application/json',
             data : message,
             dataType:'json',
-            success: function(response){
-                //alert(JSON.stringify(response));
-                $('#action').html(response['statusText']);
-            }.load(window.location.href = "/static/chat.html"),
             error: function(response){
                 //alert(JSON.stringify(response));
-                $('#action').html(response['statusText']);
+                if(response['status']==401){
+                  $('#loading').attr("src","/static/images/WRONG.png");
+                }
+                if(response['status']==200){
+                  $('#loading').attr("src","/static/images/OK.png");
+                  window.location.href = "/static/chat.html";
+                }
             }
         });
     }

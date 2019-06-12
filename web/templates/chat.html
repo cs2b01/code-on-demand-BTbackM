@@ -13,17 +13,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
   </head>
-  <body>
-    <table width="100%" border="1px">
-      <tr>
-        <td width="30%">
-          Usuarios
-        </td>
-        <td width="70%">
-          Mensajes
-        </td>
-      </tr>
+  <body onload="whoami()">
+    <h1>Chat - Mensajes</h1>
+    <table width="100%" border="1px solid">
+        <tr>
+            <td width="25%">
+                Usuarios
+                <div class="alert alert-primary" role="alert">
+                    <label id="cu_username"></label>
+                    <br/>
+                    <label id="cu_name"></label>
+                </div>
+                <div id="allusers">
+
+                </div>
+
+            </td>
+            <td width="75%">
+                Mensajes
+                <div id="messages">
+
+                </div>
+            </td>
+        </tr>
     </table>
-  <script src="/static/js/chat.js"></script>
+    <script src="/static/js/chat.js"></script>
   </body>
 </html>

@@ -85,17 +85,20 @@ def create_test_users():
 
 @app.route('/messages', methods = ['POST'])
 def create_message():
-    c = json.loads(request.form['values'])
-    message = entities.Message(
-        content=c['content'],
-        sent_on=datetime.datetime.now(),
-        user_from_id=c['user_from_id'],
-        user_to_id=c['user_to_id']
-    )
-    session = db.getSession(engine)
-    session.add(message)
-    session.commit()
-    return 'Created Message'
+    try:
+        message = json.loads(request.data)
+        message = entities.Message(
+            content=message['content'],
+            sent_on=datetime.datetime(2000,2,2),
+            user_from_id=message['user_from_id'],
+            user_to_id=message['user_to_id']
+        )
+        session = db.getSession(engine)
+        session.add(message)
+        session.commit()
+        return Response(status=200, mimetype='application/json')
+    except Exception:
+        return Response(status=401, mimetype='application/json')
 
 @app.route('/messages/<id>', methods = ['GET'])
 def get_message(id):
@@ -104,7 +107,6 @@ def get_message(id):
     for message in messages:
         js = json.dumps(message, cls=connector.AlchemyEncoder)
         return Response(js, status=200, mimetype='application/json')
-
     message = {'status': 404, 'message': 'Not Found'}
     return Response(message, status=404, mimetype='application/json')
 

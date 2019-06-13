@@ -63,26 +63,26 @@ function whoami(){
                               f = '<div class="btn btn-success" style="float: right" >';
                               f = f + response[0][sender]['content'];
                               f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
+                              $('#messages').append(f);
                               sender = sender + 1;
                           }else if(response[0][sender].id > response[1][recieveder].id) {
                                 f = '<div class="btn btn-warning" style="float: left" >';
                                 f = f + response[1][recieveder]['content'];
                                 f = f + '</div>'+'<br/><br/>';
-                                $('#messages').prepend(f);
+                                $('#messages').append(f);
                                 recieveder = recieveder + 1;
                           }else{
-                                if(response[0].length < sender && response[1].length >= recieveder) {
+                                if(response[0].length <= sender) {
                                   f = '<div class="btn btn-success" style="float: right" >';
                                   f = f + response[1][recieveder]['content'];
                                   f = f + '</div>'+'<br/><br/>';
-                                  $('#messages').prepend(f);
+                                  $('#messages').append(f);
                                   recieveder = recieveder + 1
-                                }else if(response[1].length < recieveder && response[0].length >= sender){
+                                }else if(response[1].length <= recieveder){
                                   f = '<div class="btn btn-warning" style="float: left" >';
                                   f = f + response[0][sender]['content'];
                                   f = f + '</div>'+'<br/><br/>';
-                                  $('#messages').prepend(f);
+                                  $('#messages').append(f);
                                   sender = sender + 1;
                                 }
                           }
@@ -91,13 +91,13 @@ function whoami(){
                               f = '<div class="btn btn-success" style="float: right" >';
                               f = f + response[0][i]['content'];
                               f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
+                              $('#messages').append(f);
                           }
                           if(response[1].length > 0){
                               f = '<div class="btn btn-warning" style="float: left" >';
                               f = f + response[1][i]['content'];
                               f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
+                              $('#messages').append(f);
                             }
                       }
                   }

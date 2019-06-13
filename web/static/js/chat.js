@@ -46,21 +46,58 @@ function whoami(){
     function loadMessages(user_from_id, user_to_id){
             //alert(user_from_id);
             //alert(user_to_id);
+            $('#messages').empty();
             $.ajax({
                 url:'/messages/'+user_from_id+"/"+user_to_id,
                 type:'GET',
                 contentType: 'application/json',
                 dataType:'json',
                 success: function(response){
-                  limpiar();
-                  var i = 0;
-                  $.each(response, function(){
-                      f = '<div id='+i+'>';
-                      f = f + response[i].content;
-                      f = f + '</div>';
-                      i = i+1;
-                      $('#messages').append(f);
-                  });
+                  var size_array = response[0].length+response[1].length;
+                  var sender = 0;
+                  var recieveder = 0;
+                  for(var i = 0; i < size_array; i++){
+                      if(response[0].length > 0 && response[1].length > 0){
+                          if(response[0][sender].id < response[1][recieveder].id){
+                              f = '<div class="btn btn-success" style="float: right" >';
+                              f = f + response[0][sender]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                              sender = sender + 1;
+                          }else if(response[0][sender].id > response[1][recieveder].id) {
+                              f = '<div class="btn btn-warning" style="float: left" >';
+                              f = f + response[1][recieveder]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                              recieveder = recieveder + 1;
+                          }else if(response[0].length < sender) {
+                              f = '<div class="btn btn-success" style="float: right" >';
+                              f = f + response[1][recieveder]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                              recieveder = recieveder + 1
+                          }else{
+                              f = '<div class="btn btn-warning" style="float: left" >';
+                              f = f + response[0][sender]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                              sender = sender + 1;
+                          }
+                      }else{
+                          if(response[0].length > 0){
+                              f = '<div class="btn btn-success" style="float: right" >';
+                              f = f + response[0][i]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                          }
+                          if(response[1].length > 0){
+                              f = '<div class="btn btn-warning" style="float: left" >';
+                              f = f + response[1][i]['content'];
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').prepend(f);
+                          }
+                      }
+                  }
                 },
                 error: function(response){
                     alert(JSON.stringify(response));

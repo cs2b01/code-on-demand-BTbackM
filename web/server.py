@@ -126,11 +126,13 @@ def get_messages_user(user_from_id, user_to_id ):
         entities.Message.user_from_id == user_to_id).filter(
         entities.Message.user_to_id == user_from_id
     )
-    data = []
+    data_send = []
+    data_recieved = []
     for message in messages_send:
-        data.append(message)
+        data_send.append(message)
     for message in messages_recieved:
-        data.append(message)
+        data_recieved.append(message)
+    data = [data_send, data_recieved]
     return Response(json.dumps(data, cls=connector.AlchemyEncoder), mimetype='application/json')
 
 @app.route('/messages', methods = ['PUT'])

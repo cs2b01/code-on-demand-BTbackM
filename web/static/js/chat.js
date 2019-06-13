@@ -109,6 +109,8 @@ function whoami(){
     }
 
     function limpiar(user_from_id,user_to_id){
+      $('#newmessage').empty();
+      $('#newmessage').append('<div class="input-group mb-3"><input type="text" class="form-control" id="content" placeholder="Write your message..." aria-label="Enter Message" aria-describedby="basic-addon2"/><div id="Enviar" class="input-group-append"></div></div><label id="confirmacion"></label>')
       $('#Enviar').empty();
       $('#Enviar').append('<input type="button" class="btn btn-success-secondary" value="Send" onclick="newMessage('+user_from_id+','+user_to_id+')"/>');
     }
@@ -134,7 +136,7 @@ function whoami(){
               if(response['status']==401){
                   alert('No se puedo enviar el mensaje');
               }else{
-                  $('#confirmacion').html('Mensaje enviado');
+                  $('#confirmacion').html('Enviado');
               }
           }
     });

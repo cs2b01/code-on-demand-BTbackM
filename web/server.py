@@ -89,7 +89,7 @@ def create_message():
         message = json.loads(request.data)
         message = entities.Message(
             content=message['content'],
-            sent_on=datetime.datetime(2000,2,2),
+            sent_on=datetime.datetime.now(),
             user_from_id=message['user_from_id'],
             user_to_id=message['user_to_id']
         )
@@ -107,6 +107,7 @@ def get_message(id):
     for message in messages:
         js = json.dumps(message, cls=connector.AlchemyEncoder)
         return Response(js, status=200, mimetype='application/json')
+
     message = {'status': 404, 'message': 'Not Found'}
     return Response(message, status=404, mimetype='application/json')
 

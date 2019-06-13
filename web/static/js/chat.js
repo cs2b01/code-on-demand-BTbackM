@@ -43,15 +43,10 @@ function whoami(){
             });
     }
 
-    function clear(user_from_id, user_to_id){
-      $('#Enviar').empty();
-      $('#Enviar').append('<br/><input type="button" class="btn btn-success-secondary" value="Send" onclick="newMessage('+user_from_id+','+user_to_id+')"/>');
-    }
-
     function loadMessages(user_from_id, user_to_id){
             //alert(user_from_id);
             //alert(user_to_id);
-            clear(user_from_id, user_to_id);
+            limpiar(user_from_id,user_to_id);
             $('#messages').empty();
             $.ajax({
                 url:'/messages/'+user_from_id+"/"+user_to_id,
@@ -113,10 +108,15 @@ function whoami(){
             });
     }
 
-    function newMessage(_user_from_id,_user_to_id){
-      var user_to_id = _user_to_id;
+    function limpiar(user_from_id,user_to_id){
+      $('#Enviar').empty();
+      $('#Enviar').append('<input type="button" class="btn btn-success-secondary" value="Send" onclick="newMessage('+user_from_id+','+user_to_id+')"/>');
+    }
+
+    function newMessage(from_id,to_id){
+      var user_to_id = to_id;
       var content = $('#content').val();
-      var user_from_id = _user_from_id;
+      var user_from_id = from_id;
       var message = JSON.stringify({
           "user_from_id": user_from_id,
           "user_to_id": user_to_id,
@@ -132,10 +132,11 @@ function whoami(){
           },
           error: function(response){
               if(response['status']==401){
-                  alert('No enviado');
+                  alert('No se puedo enviar el mensaje');
               }else{
-                  $('#confirmacion').html('Enviado');
+                  $('#confirmacion').html('Mensaje enviado');
               }
           }
     });
+    loadMessages(from_id,to_id);
 }

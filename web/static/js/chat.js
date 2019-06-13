@@ -58,14 +58,14 @@ function whoami(){
                   var sender = 0;
                   var recieveder = 0;
                   for(var i = 0; i < size_array; i++){
-                      if(response[0].length > 0 && response[1].length > 0){
-                          if(response[0][sender].id < response[1][recieveder].id){
+                      if(response[0].length > 0 && response[1].length > 0 ){
+                          if(response[0][sender].id < response[1][recieveder].id || ((response[0].length) > sender && (response[1].length-1) <= recieveder)){
                               f = '<div class="btn btn-success" style="float: right" >';
                               f = f + response[0][sender]['content'];
                               f = f + '</div>'+'<br/><br/>';
                               $('#messages').append(f);
                               sender = sender + 1;
-                          }else if(response[0][sender].id > response[1][recieveder].id) {
+                          }else if(response[0][sender].id > response[1][recieveder].id || ((response[1].length) > recieveder && (response[0].length-1) <= sender)){
                                 f = '<div class="btn btn-warning" style="float: left" >';
                                 f = f + response[1][recieveder]['content'];
                                 f = f + '</div>'+'<br/><br/>';

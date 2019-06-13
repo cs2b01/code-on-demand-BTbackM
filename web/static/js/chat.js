@@ -65,23 +65,25 @@ function whoami(){
                               $('#messages').prepend(f);
                               sender = sender + 1;
                           }else if(response[0][sender].id > response[1][recieveder].id) {
-                              f = '<div class="btn btn-warning" style="float: left" >';
-                              f = f + response[1][recieveder]['content'];
-                              f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
-                              recieveder = recieveder + 1;
-                          }else if(response[0].length < sender) {
-                              f = '<div class="btn btn-success" style="float: right" >';
-                              f = f + response[1][recieveder]['content'];
-                              f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
-                              recieveder = recieveder + 1
+                                f = '<div class="btn btn-warning" style="float: left" >';
+                                f = f + response[1][recieveder]['content'];
+                                f = f + '</div>'+'<br/><br/>';
+                                $('#messages').prepend(f);
+                                recieveder = recieveder + 1;
                           }else{
-                              f = '<div class="btn btn-warning" style="float: left" >';
-                              f = f + response[0][sender]['content'];
-                              f = f + '</div>'+'<br/><br/>';
-                              $('#messages').prepend(f);
-                              sender = sender + 1;
+                                if(response[0].length < sender && response[1].length >= recieveder) {
+                                  f = '<div class="btn btn-success" style="float: right" >';
+                                  f = f + response[1][recieveder]['content'];
+                                  f = f + '</div>'+'<br/><br/>';
+                                  $('#messages').prepend(f);
+                                  recieveder = recieveder + 1
+                                }else if(response[1].length < recieveder && response[0].length >= sender){
+                                  f = '<div class="btn btn-warning" style="float: left" >';
+                                  f = f + response[0][sender]['content'];
+                                  f = f + '</div>'+'<br/><br/>';
+                                  $('#messages').prepend(f);
+                                  sender = sender + 1;
+                                }
                           }
                       }else{
                           if(response[0].length > 0){
@@ -95,7 +97,7 @@ function whoami(){
                               f = f + response[1][i]['content'];
                               f = f + '</div>'+'<br/><br/>';
                               $('#messages').prepend(f);
-                          }
+                            }
                       }
                   }
                 },
@@ -109,20 +111,30 @@ function whoami(){
        document.getElementById("messages").innerHTML="";
     }
 
-    function sendMessage(){
-            var content = $('#content').val();
-            var user_from_id = $('#user_from_id').val();
-            var user_to_id = $('#user_to_id').val();
-            var message = JSON.stringify({
-                    "content": content,
-                    "user_from_id": user_from_id,
-                    "user_to_id": user_to_id
-                });
-           $.ajax({
-                     url:'/sendMessage',
-                     type:'POST',
-                     contentType: 'application/json',
-                     data : message,
-                     dataType:'json'
-                   });
-    }
+    function newMessage(from_id,to_id){
+      var user_to_id = to_id;
+      var content = $('#content').val();
+      var user_from_id = from_id;
+      var message = JSON.stringify({
+          "user_from_id": user_from_id,
+          "user_to_id": user_to_id,
+          "content": content
+      });
+      $.ajax({
+          url:'/messages',
+          type:'POST',
+          contentType: 'application/json',
+          data : message,
+          dataType:'json',
+          success: function(response){
+          },
+          error: function(response){
+              if(response['status']==401){
+                  alert('No se puedo enviar el mensaje');
+              }else{
+                  $('#confirmacion').html('Mensaje enviado');
+              }
+          }
+    });
+    loadMessages(from_id,to_id);
+}

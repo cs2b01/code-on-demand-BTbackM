@@ -88,7 +88,7 @@ def create_message():
     c = json.loads(request.form['values'])
     message = entities.Message(
         content=c['content'],
-        sent_on=datetime.datetime(2000,2,2),
+        sent_on=datetime.datetime.now(),
         user_from_id=c['user_from_id'],
         user_to_id=c['user_to_id']
     )

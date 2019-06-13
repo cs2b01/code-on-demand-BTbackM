@@ -20,9 +20,10 @@
             <td width="25%">
                 Usuarios
                 <div class="alert alert-primary" role="alert">
-                    <label id="cu_username"></label>
+                    <label id="cu_username" style="text-align:center"></label>
                     <br/>
-                    <label id="cu_name"></label>
+                    <label id="cu_name"></label><br/>
+                    <div><a class="btn btn-info" href="/logout">Log out</a></div>
                 </div>
                 <div id="allusers">
 
@@ -33,6 +34,14 @@
                 Mensajes
                 <div id="messages">
 
+                </div>
+                <div id="newmessage">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" id="content" placeholder="Enter Message" aria-label="Enter Message" aria-describedby="basic-addon2"/>
+                      <div id="Enviar" class="input-group-append">
+                      </div>
+                    </div>
+                    <label id="confirmacion"></label>
                 </div>
             </td>
         </tr>

@@ -48,6 +48,7 @@ function whoami(){
             //alert(user_to_id);
             limpiar(user_from_id,user_to_id);
             $('#messages').empty();
+            $('#header').html('Mensajes de ');
             $.ajax({
                 url:'/messages/'+user_from_id+"/"+user_to_id,
                 type:'GET',
@@ -61,41 +62,41 @@ function whoami(){
                       if(response[0].length > 0 && response[1].length > 0 ){
                           if(response[0][sender].id < response[1][recieveder].id || ((response[0].length) > sender && (response[1].length-1) <= recieveder)){
                               f = '<div class="btn btn-success" style="float: right" >';
-                              f = f + response[0][sender]['content'];
+                              f = f + response[0][sender].content;
                               f = f + '</div>'+'<br/><br/>';
                               $('#messages').append(f);
                               sender = sender + 1;
                           }else if(response[0][sender].id > response[1][recieveder].id || ((response[1].length) > recieveder && (response[0].length-1) <= sender)){
-                                f = '<div class="btn btn-warning" style="float: left" >';
-                                f = f + response[1][recieveder]['content'];
+                              f = '<div class="btn btn-warning" style="float: left" >';
+                              f = f + response[1][recieveder].content;
+                              f = f + '</div>'+'<br/><br/>';
+                              $('#messages').append(f);
+                              recieveder = recieveder + 1;
+                          }else{
+                              if(response[0].length <= sender) {
+                                f = '<div class="btn btn-success" style="float: right" >';
+                                f = f + response[1][recieveder].content + '<div>';
                                 f = f + '</div>'+'<br/><br/>';
                                 $('#messages').append(f);
-                                recieveder = recieveder + 1;
-                          }else{
-                                if(response[0].length <= sender) {
-                                  f = '<div class="btn btn-success" style="float: right" >';
-                                  f = f + response[1][recieveder]['content'];
-                                  f = f + '</div>'+'<br/><br/>';
-                                  $('#messages').append(f);
-                                  recieveder = recieveder + 1
-                                }else if(response[1].length <= recieveder){
-                                  f = '<div class="btn btn-warning" style="float: left" >';
-                                  f = f + response[0][sender]['content'];
-                                  f = f + '</div>'+'<br/><br/>';
-                                  $('#messages').append(f);
-                                  sender = sender + 1;
-                                }
+                                recieveder = recieveder + 1
+                              }else if(response[1].length <= recieveder){
+                                f = '<div class="btn btn-warning" style="float: left" >';
+                                f = f + response[0][sender].content;
+                                f = f + '</div>'+'<br/><br/>';
+                                $('#messages').append(f);
+                                sender = sender + 1;
+                              }
                           }
                       }else{
                           if(response[0].length > 0){
                               f = '<div class="btn btn-success" style="float: right" >';
-                              f = f + response[0][i]['content'];
+                              f = f + response[0][i].content;
                               f = f + '</div>'+'<br/><br/>';
                               $('#messages').append(f);
                           }
                           if(response[1].length > 0){
                               f = '<div class="btn btn-warning" style="float: left" >';
-                              f = f + response[1][i]['content'];
+                              f = f + response[1][i].content;
                               f = f + '</div>'+'<br/><br/>';
                               $('#messages').append(f);
                             }
